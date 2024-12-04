@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login by Telegram</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <a href="{{ telegram_login_url }}" id="login-button" target="_blank">Войти через Telegram</a>
+    <p id="user-info" style="display: none;">Добро пожаловать, <span id="username"></span>!</p>
+
+    <script>
+        function checkAuthStatus() {
+            $.get('/auth-status/', function(data) {
+                if (data.is_authenticated) {
+                    $('#login-button').hide();
+                    $('#username').text(data.username);
+                    $('#user-info').show();
+                } else {
+                    setTimeout(checkAuthStatus, 2000);
+                }
+            });
+        }
+
+        checkAuthStatus();
+    </script>
+</body>
+</html>
